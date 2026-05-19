@@ -25,7 +25,7 @@ public class ChampionshipController {
     }
 
     @GetMapping
-    List<ChampionshipResource> findAll() {
+    public List<ChampionshipResource> findAll() {
         return this.championshipService.findAll()
                 .stream()
                 .map(championship -> championship.to(new ChampionshipResourceBuilder()))

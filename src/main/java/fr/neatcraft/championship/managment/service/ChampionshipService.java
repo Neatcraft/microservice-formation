@@ -1,7 +1,9 @@
 package fr.neatcraft.championship.managment.service;
 
 import fr.neatcraft.championship.managment.repository.ChampionshipRepository;
+import fr.neatcraft.championship.managment.repository.MatchRepository;
 import fr.neatcraft.championship.managment.repository.model.Championship;
+import fr.neatcraft.championship.managment.repository.model.Match;
 import fr.neatcraft.championship.managment.service.command.CreateMatchCommand;
 import fr.neatcraft.championship.managment.service.command.ModifyDatesCommand;
 import fr.neatcraft.championship.managment.service.command.ModifyStatusCommand;
@@ -14,11 +16,11 @@ import java.util.UUID;
 @Service
 public class ChampionshipService {
     private final ChampionshipRepository championshipRepository;
-    private final MatchService matchService;
+    private final MatchRepository matchRepository;
 
-    public ChampionshipService(ChampionshipRepository championshipRepository, MatchService matchService) {
+    public ChampionshipService(ChampionshipRepository championshipRepository, MatchRepository matchRepository) {
         this.championshipRepository = championshipRepository;
-        this.matchService = matchService;
+        this.matchRepository = matchRepository;
     }
 
     public List<Championship> findAll() {
@@ -58,7 +60,13 @@ public class ChampionshipService {
     @Transactional
     public void addMatch(UUID championshipId, CreateMatchCommand command) {
         findOneById(championshipId);
-        this.matchService.create(championshipId, command);
+        var match = Match.builder()
+                .championshipId(championshipId)
+                .homeTeam(command.homeTeam())
+                .awayTeam(command.awayTeam())
+                .scheduledAt(command.scheduledAt())
+                .build();
+        this.matchRepository.create(match);
     }
 
     @Transactional
