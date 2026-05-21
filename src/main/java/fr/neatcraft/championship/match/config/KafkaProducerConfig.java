@@ -1,5 +1,6 @@
 package fr.neatcraft.championship.match.config;
 
+import fr.neatcraft.championship.messaging.MdcKafkaProducerInterceptor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ public class KafkaProducerConfig {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MdcKafkaProducerInterceptor.class.getName());
         return new DefaultKafkaProducerFactory<>(props);
     }
 

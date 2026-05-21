@@ -11,7 +11,7 @@ import tools.jackson.databind.ObjectMapper;
 @Component
 public class MatchProducer {
     private static final Logger log = LoggerFactory.getLogger(MatchProducer.class);
-    private static final String RESILIENCE_INSTANCE = "kafkaProducer";
+private static final String RESILIENCE_INSTANCE = "kafkaProducer";
     public static final String TOPIC = "match.created";
 
     private final KafkaTemplate<String, String> kafkaTemplate;

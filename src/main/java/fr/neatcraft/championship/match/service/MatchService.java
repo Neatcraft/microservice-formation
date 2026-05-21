@@ -1,7 +1,6 @@
 package fr.neatcraft.championship.match.service;
 
-import fr.neatcraft.championship.championship.repository.ChampionshipRepository;
-import fr.neatcraft.championship.championship.service.ChampionshipNotFoundException;
+import fr.neatcraft.championship.match.client.ChampionshipRestClient;
 import fr.neatcraft.championship.match.messaging.MatchCreatedEvent;
 import fr.neatcraft.championship.match.messaging.MatchProducer;
 import fr.neatcraft.championship.match.repository.MatchRepository;
@@ -15,12 +14,12 @@ import java.util.UUID;
 
 @Service
 public class MatchService {
-    private final ChampionshipRepository championshipRepository;
+    private final ChampionshipRestClient championshipRestClient;
     private final MatchRepository matchRepository;
     private final MatchProducer matchProducer;
 
-    public MatchService(ChampionshipRepository championshipRepository, MatchRepository matchRepository, MatchProducer matchProducer) {
-        this.championshipRepository = championshipRepository;
+    public MatchService(ChampionshipRestClient championshipRestClient, MatchRepository matchRepository, MatchProducer matchProducer) {
+        this.championshipRestClient = championshipRestClient;
         this.matchRepository = matchRepository;
         this.matchProducer = matchProducer;
     }
@@ -36,8 +35,7 @@ public class MatchService {
 
     @Transactional
     public void create(UUID championshipId, CreateMatchCommand command) {
-        championshipRepository.findById(championshipId)
-                .orElseThrow(() -> new ChampionshipNotFoundException(championshipId));
+        championshipRestClient.findById(championshipId);
 
         var match = Match.builder()
                 .championshipId(championshipId)
