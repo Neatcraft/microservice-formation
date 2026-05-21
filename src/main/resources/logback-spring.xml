@@ -7,7 +7,17 @@
         </encoder>
     </appender>
 
+    <!-- Envoi JSON structuré vers Logstash (MDC fields inclus automatiquement) -->
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination>
+        <reconnectionDelay>10 seconds</reconnectionDelay>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"application":"championship"}</customFields>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOGSTASH"/>
     </root>
 </configuration>

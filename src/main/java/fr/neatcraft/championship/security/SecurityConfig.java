@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((req, res, e) ->
                                 res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/error", "/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
